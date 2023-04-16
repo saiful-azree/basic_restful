@@ -7,11 +7,21 @@ GET http://localhost:3000/bye
 ###
 
 GET http://localhost:3000/hello
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhaWZ1bCIsInBhc3N3b3JkIjoiMDEyMzQ1IiwibmFtZSI6IlNhaWZ1bCBBenJlZSBCaW4gU2FpZnVsIEF6bWkiLCJlbWFpbCI6ImF6cmVlYXlpZTI0QGdtYWlsLmNvbSIsImlhdCI6MTY4MTExMTY1MCwiZXhwIjoxNjgxMTE1MjUwfQ.b5QxQBS0vlYE8T7TLEuJYy13XGSKJP9Um-dLQ4QuKh8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhdXMiLCJwYXNzd29yZCI6IjAwMDAwMCIsIm5hbWUiOiJGaXJkYXVzIEhhc3NhbiIsImVtYWlsIjoiZmlyZGF1c0BnbWFpbC5jb20iLCJpYXQiOjE2ODExMTE3OTgsImV4cCI6MTY4MTExNTM5OH0.PSO_ZFuLvq7bBYamS719SCxrI-Ae6vAscNOTTZxsjNk
 
 ###
 
 POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "username": "daus",
+    "password": "000000"
+}
+
+###
+
+POST http://localhost:3000/login2
 Content-Type: application/json
 
 {

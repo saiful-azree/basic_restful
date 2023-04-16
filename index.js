@@ -3,6 +3,11 @@ var jwt = require('jsonwebtoken')
 const app = express()
 const port = 3000
 
+//LAB1
+const bcrypt = required('bcrypt');
+const saltRounds = 10;
+var hashed;
+
 let dbUsers = [
   {
     username: "saiful",
@@ -45,6 +50,24 @@ app.post( '/login', (req, res) => {
     res.send(generateToken(user))
 })
 
+//LAB1
+app.post( '/login2', (req, res) => {
+  let {username, password} = req.body;
+  //Bcrypt hash
+  bcrypt.genSalt(saltRounds, function(err, salt){
+    bcrypt.hash(password, salt, function(err, hash){
+      hashed = hash
+      console.log('hash: ',hash)
+    })
+  })
+  //Sending username and hashed password to login2 function
+  setTimeout(function(){
+    login2(username, hashed)
+  },500)
+  //login2(username, hashed);
+  res.send(req.body)
+})
+
 app.post( '/register', (req, res) => {
   let data = req.body
   res.send(
@@ -75,6 +98,8 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
+//FUNCTION
+
 function login(username, password){
   console.log("Someone try to login with", username, password)
   let matched = dbUsers.find(element => element.username == username)
@@ -89,6 +114,27 @@ function login(username, password){
       return "Username not found"
   }
   
+}
+
+//LAB1
+function login2(username, hashed){
+  console.log("Someone try to login with", username, password)
+  let matched = dbUsers.find(element => element.username == username)
+  if(matched){
+    //Bcrypt password verification
+    bcrypt.compare(matched.password, hashed, function(err, result){
+      if(result == true){
+        console.log("Access granted usin bcrypt")
+      }
+      else{
+        console.log("Password not matched")
+        console.log(result)
+      }
+    })
+  }
+  else{
+    console.log("Username not found")
+  }
 }
 
 function register(newusername, newpassword, newname, newemail){
