@@ -4,7 +4,7 @@ const app = express()
 const port = 3000
 
 //LAB1
-const bcrypt = required('bcrypt');
+const bcrypt = require('bcrypt');
 const saltRounds = 10;
 var hashed;
 
