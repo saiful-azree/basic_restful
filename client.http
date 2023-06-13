@@ -15,18 +15,8 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "username": "daus",
+    "username": "paridah",
     "password": "000000"
-}
-
-###
-
-POST http://localhost:3000/login2
-Content-Type: application/json
-
-{
-    "username": "saiful",
-    "password": "012345"
 }
 
 ###
@@ -35,8 +25,40 @@ POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-    "username": "daus",
+    "username": "paridah",
     "password": "000000",
-    "name": "Firdaus Hassan",
-    "email": "firdaus@gmail.com"
+    "name": "Nor Paridah",
+    "email": "norparidah@gmail.com"
+}
+
+###
+
+POST  http://localhost:3000/changePassword
+Content-Type: application/json
+
+{
+    "username": "daus",
+    "newpassword": "666555"
+}
+
+###
+
+POST http://localhost:3000/deleteAccount
+Content-Type: application/json
+
+{
+    "username": "paridah",
+    "password": "000000"
+}
+
+###
+
+POST http://localhost:3000/visitor
+Content-Type: application/json
+
+{
+    "username": "paridah",
+    "password": "000000",
+    "name": "Nor Paridah",
+    "email": "norparidah@gmail.com"
 }
