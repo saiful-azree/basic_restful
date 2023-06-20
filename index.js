@@ -11,6 +11,7 @@ const port = 3000
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 var hashed;
+var checkpassword;
 
 let dbUsers = [
   {
@@ -169,7 +170,7 @@ async function changePassword(savedusername, newpassword){
   await client.connect()
   const exist = await client.db("lab").collection("Visitor").findOne({username: savedusername})
   if(exist){
-    await client.db("lab").collection("Visitor").updateOne({password: newpassword}, {$set: {password: newpassword}})
+    await client.db("lab").collection("Visitor").updateOne({username: savedusername}, {$set: {password: newpassword}})
     console.log("Your password has changed successfuly.")
   }else{
     console.log("Username does not exist.")
@@ -180,7 +181,7 @@ async function deleteAccount(oldusername, oldpassword){
   await client.connect()
   const exist = await client.db("lab").collection("Visitor").findOne({username: oldusername})
   if(exist){
-    checkpassword = await exist.oldpassword
+    checkpassword = await exist.password;
     if(oldpassword == checkpassword){
       await client.db("lab").collection("Visitor").deleteOne({username: oldusername})
       console.log("Account deleted successfully.")
