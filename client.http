@@ -15,40 +15,51 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-    "username": "paridah",
-    "password": "000000"
+    "name": "Fahmi",
+    "password": "12345"
 }
 
 ###
 
-POST http://localhost:3000/register
+POST http://localhost:3000/registerVisitor
 Content-Type: application/json
 
 {
-    "username": "paridah",
-    "password": "000000",
-    "name": "Nor Paridah",
-    "email": "norparidah@gmail.com"
+    "role": "visitor",
+    "name": "Arif Saiful",
+    "idNumber": "111222333",
+    "documentType": "Mykad",
+    "gender": "Male",
+    "birthDate": "2000-03-09",
+    "age": "23",
+    "documentExpiry": "2035-09-23", 
+    "company": "belacan",
+    "TelephoneNumber": "0123456789",
+    "vehicleNumber": "wnw2389",
+    "category": "Guest",
+    "ethnicity": "Malay",
+    "photoAttributes": "Photo attributes here",
+    "passNumber": "003"
 }
 
 ###
 
-POST  http://localhost:3000/changePassword
+POST  http://localhost:3000/changePhoneNumber
 Content-Type: application/json
 
 {
-    "username": "daus",
-    "newpassword": "666555"
+    "savedidNumber": "20223112",
+    "newphoneNumber": "0169042665"
 }
 
 ###
 
-POST http://localhost:3000/deleteAccount
+POST http://localhost:3000/deleteVisitor
 Content-Type: application/json
 
 {
-    "username": "paridah",
-    "password": "000000"
+    "name": "Arif Saiful",
+    "idNumber": "111222333"
 }
 
 ###

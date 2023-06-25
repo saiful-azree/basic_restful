@@ -1,6 +1,6 @@
 //mongoDB
 const { MongoClient} = require("mongodb");
-const uri = "mongodb://172.24.74.118:27017/"
+const uri = "mongodb+srv://fakhrul:1235@clusterfakhrul.bigkwnk.mongodb.net/"
 const  client = new MongoClient(uri)
 //express
 const express = require('express')
@@ -65,7 +65,7 @@ app.get('/visitor', verifyToken, (req, res) => {
 
 //login
 app.post( '/login',async function (req, res) {
-  let {username, password} = req.body
+  let {name, password} = req.body
   //BCRYPT hash
   const salt = await bcrypt.genSalt(saltRounds)
   hashed = await bcrypt.hash(password, salt)
@@ -77,30 +77,42 @@ app.post( '/login',async function (req, res) {
     //res.send(generateToken(user))
 })
 //register
-app.post( '/register', (req, res) => {
+app.post( '/registerVisitor', (req, res) => {
   let data = req.body
   res.send(
-    register(
-      data.username,
-      data.password,
+    registerVisitor(
+      data.role,
       data.name,
-      data.email
+      data.idNumber,
+      data.documentType,
+      data.gender,
+      data.birthDate,
+      data.age,
+      data.documentExpiry,
+      data.company,
+      data.TelephoneNumber,
+      data.vehicleNumber,
+      data.category,
+      data.ethnicity,
+      data.photoAttributes,
+      data.passNumber                  
     )
   )
 });
-//change password
-app.post('/changePassword', async function (req, res){
-  const {username, newpassword} = req.body
-  await changePassword(username, newpassword)
+//change phone number
+app.post('/changePhoneNumber', async function (req, res){
+  const {savedidNumber, newphoneNumber} = req.body
+  await changePhoneNumber(savedidNumber, newphoneNumber)
   res.send(req.body)
 })
-//delete account
-app.post('/deleteAccount', async function (req, res){
-  const {username, password} = req.body
-  await deleteAccount(username, password)
+//delete visitor
+app.post('/deleteVisitor', async function (req, res){
+  const {name, idNumber} = req.body
+  await deleteVisitor(name, idNumber)
   res.send(req.body)
 })
 
+//lain2
 app.post( '/', (req, res) => {
   const { username, password } = req.body;
   const user = dbUsers.find(user => user.username === username && user.password === password);
@@ -123,13 +135,13 @@ app.listen(port, () => {
 
 //CREATE(createListing)
 async function createListing(client, newListing){
-  const result = await client.db("lab").collection("Visitor").insertOne(newListing);
+  const result = await client.db("assignmentCondo").collection("visitor").insertOne(newListing);
   console.log(`New listing created with the following id: ${result.insertedId}`);
 }
 //READ(login)
-async function login(username, hashed){
+async function login(name, hashed){
   await client.connect()
-  const result = await client.db("lab").collection("Visitor").findOne({ username: username });
+  const result = await client.db("assignmentCondo").collection("admin").findOne({ name: name });
 
   if (result) {
     //BCRYPT verify password
@@ -143,53 +155,66 @@ async function login(username, hashed){
     });
   } 
   else {
-      console.log("Username not registered")
+      console.log("Admin not registered")
   }
 }
 //CREATE(register)
-async function register(newusername, newpassword, newname, newemail){
+async function registerVisitor(newrole, newname, newidNumber, newdocumentType, newgender, newbirthDate, 
+                        newage, newdocumentExpiry, newcompany, newTelephoneNumber, newvehicleNumber,
+                        newcategory, newethnicity, newphotoAttributes, newpassNumber){
   //TODO: Check if username exist
   await client.connect()
-  const exist = await client.db("lab").collection("Visitor").findOne({username: newusername})
+  const exist = await client.db("assignmentCondo").collection("visitor").findOne({name: newname})
   if(exist){
-      console.log("Username as been")
+      console.log("Visitor has already registered")
   }else{
       await createListing(client,
         {
-          username: newusername,
-          password: newpassword,
+          role: newrole,
           name: newname,
-          email: newemail
+          idNumber: newidNumber,
+          documentType: newdocumentType,
+          gender: newgender,
+          birthDate:newbirthDate,
+          age: newage,
+          documentExpiry: newdocumentExpiry,
+          company: newcompany,
+          TelephoneNumber: newTelephoneNumber,
+          vehicleNumber: newvehicleNumber,
+          category: newcategory,
+          ethnicity: newethnicity,
+          photoAttributes: newphotoAttributes,
+          passNumber: newpassNumber 
         }
       );
       console.log("Registered successfully!")
   }
 } 
-//UPDATE(change password)
-async function changePassword(savedusername, newpassword){
+//UPDATE(change phone number)
+async function changePhoneNumber(savedidNumber, newphoneNumber){
   await client.connect()
-  const exist = await client.db("lab").collection("Visitor").findOne({username: savedusername})
+  const exist = await client.db("assignmentCondo").collection("admin").findOne({idNumber: savedidNumber})
   if(exist){
-    await client.db("lab").collection("Visitor").updateOne({username: savedusername}, {$set: {password: newpassword}})
-    console.log("Your password has changed successfuly.")
+    await client.db("assignmentCondo").collection("admin").updateOne({idNumber: savedidNumber}, {$set: {phoneNumber: newphoneNumber}})
+    console.log("Your phone number has changed successfuly.")
   }else{
-    console.log("Username does not exist.")
+    console.log("This admin does not exist.")
   }
 }
-//DELETE(delete account)
-async function deleteAccount(oldusername, oldpassword){
+//DELETE(delete visitor)
+async function deleteVisitor(oldname, oldidNumber){
   await client.connect()
-  const exist = await client.db("lab").collection("Visitor").findOne({username: oldusername})
+  const exist = await client.db("assignmentCondo").collection("visitor").findOne({name: oldname})
   if(exist){
-    checkpassword = await exist.password;
-    if(oldpassword == checkpassword){
-      await client.db("lab").collection("Visitor").deleteOne({username: oldusername})
-      console.log("Account deleted successfully.")
+    checkidNumber = await exist.idNumber;
+    if(oldidNumber == checkidNumber){
+      await client.db("assignmentCondo").collection("visitor").deleteOne({name: oldname})
+      console.log("Visitor account deleted successfully.")
     }else{
-      console.log("Password is incorrect")
+      console.log("ID number is incorrect")
     }
   }else{
-    console.log("Username does not exist.")
+    console.log("Visitor does not exist.")
   }
 }
 
